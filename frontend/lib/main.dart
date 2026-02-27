@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/prediction_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const DiaAIApp());
@@ -17,7 +17,7 @@ class DiaAIApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF007AFF)),
       ),
-      home: const PredictionScreen(),
+      home: const HomeScreen(),
     );
   }
 }

@@ -74,7 +74,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F7), // Gris très clair style iOS
       appBar: AppBar(
-        title: const Text("DiaAI Assistant"),
+        title: const Text("Prédiction de la glycémie"),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -84,7 +84,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // --- CARTE DE RÉSULTAT ---
+            // Résultat de la prédiction
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -92,7 +92,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: _resultColor.withOpacity(0.2),
+                    color: _resultColor.withValues(alpha: 0.2),
                     blurRadius: 20,
                     offset: const Offset(0, 10),
                   ),
