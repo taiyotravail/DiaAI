@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../widgets/input_card.dart';
+import '../main.dart';
 
 class PredictionScreen extends StatefulWidget {
   const PredictionScreen({super.key});
@@ -46,6 +47,14 @@ class _PredictionScreenState extends State<PredictionScreen> {
       );
 
       double prediction = data['glycemie_estimee'];
+
+      // Sauvegarder la prédiction dans le repository
+      await predictionRepository.createAndSavePrediction(
+        glycemieAvant: glycemie,
+        glucides: glucides,
+        insuline: insuline,
+        glycemiePredite: prediction,
+      );
 
       setState(() {
         _resultat = "${prediction.toStringAsFixed(2)} g/L";
