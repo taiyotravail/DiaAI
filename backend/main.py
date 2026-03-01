@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthCredentials
 from pydantic import BaseModel
 import xgboost as xgb
 import numpy as np
@@ -11,6 +12,9 @@ app = FastAPI(
     description="API qui appelle le modèle IA (XGBoost + FastAPI)",
     version="1.0"
 )
+security = HTTPBearer()
+
+API_TOKEN = os.getenv("API_BEARER_TOKEN")
 
 # 2. Chargement du Modèle IA
 
@@ -32,7 +36,19 @@ class PredictionInput(BaseModel):
     glucides: float
     insuline: float
 
-# 4. La Route Principale : /predict
+
+# 4. Middleware de Sécurité
+
+async def verify_token(credentials: HTTPAuthCredentials = Depends(security)):
+    if credentials.credentials != API_TOKEN:
+        raise HTTPException(
+            status_code=401,
+            detail="Token invalide ou manquant"
+        )
+    return credentials.credentials
+
+
+# 5. La Route Principale : /predict
 
 @app.post("/predict")
 def predict_glycemie(data: PredictionInput):
@@ -60,7 +76,9 @@ def predict_glycemie(data: PredictionInput):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur de calcul : {str(e)}")
 
-# 5. Route de test (Ping)
-@app.get("/")
+
+# 6. Route de test (Ping)
+@app.get("/", dependencies=[Depends(verify_token)])
 def read_root():
     return {"message": "Serveur DiaAI en ligne."}
+
