@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthCredentials
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import xgboost as xgb
 import numpy as np
@@ -39,7 +39,7 @@ class PredictionInput(BaseModel):
 
 # 4. Middleware de Sécurité
 
-async def verify_token(credentials: HTTPAuthCredentials = Depends(security)):
+async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     if credentials.credentials != API_TOKEN:
         raise HTTPException(
             status_code=401,
