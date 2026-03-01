@@ -50,7 +50,7 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
 # 5. La Route Principale : /predict
 
-@app.post("/predict")
+@app.post("/predict", dependencies=[Depends(verify_token)])
 def predict_glycemie(data: PredictionInput):
     # Vérification de sécurité
     if model is None:
