@@ -71,7 +71,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
       });
     } catch (e) {
       setState(() {
-        _message = "Erreur: ${e.toString().replaceAll('Exception: ', '')}";
+        _message = e.toString().replaceAll('Exception: ', '');
         _isLoading = false;
         _resultColor = Colors.redAccent;
       });
