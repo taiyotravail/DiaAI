@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1052841639210",
+    "project_id": "diaai1",
+    "storage_bucket": "diaai1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052841639210:android:cc5d1370c4e25f522ef253",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGkE7nnSnIt3geaUxzhjes22NBBW0D5Hg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

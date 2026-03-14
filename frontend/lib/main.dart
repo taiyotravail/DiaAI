@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home_screen.dart';
 import 'services/local_data_source.dart';
 import 'services/prediction_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 // Repository global - sera initialisé au démarrage
 late LocalPredictionRepository predictionRepository;
@@ -16,6 +18,11 @@ void main() async {
   final localDataSource = LocalDataSource(prefs);
   // Initialiser le Repository pour qu'il soit accessible dans toutes les pages
   predictionRepository = LocalPredictionRepository(localDataSource);
+
+  // Initialiser Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const DiaAIApp());
 }
