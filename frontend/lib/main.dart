@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/services/firestore_data_source.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/home_screen.dart';
 import 'services/local_data_source.dart';
@@ -16,13 +17,15 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   // Initialiser la source de données locale et le repository
   final localDataSource = LocalDataSource(prefs);
-  // Initialiser le Repository pour qu'il soit accessible dans toutes les pages
-  predictionRepository = LocalPredictionRepository(localDataSource);
+  final FirestoreDataSource cloudDataSource = FirestoreDataSource();
+  
 
   // Initialiser Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Initialiser le Repository pour qu'il soit accessible dans toutes les pages
+  predictionRepository = LocalPredictionRepository(localDataSource, cloudDataSource);
 
   runApp(const DiaAIApp());
 }

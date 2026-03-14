@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/services/local_data_source.dart';
 import 'package:frontend/services/prediction_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:frontend/services/firestore_data_source.dart';
 
 void main() {
   // Si j'utilise SharedPreferences ou un plugin natif dans mon test, il faut initialiser le binding pour éviter les erreurs
@@ -13,7 +15,9 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final dataSource = LocalDataSource(prefs);
-    repository = LocalPredictionRepository(dataSource);
+    final fakeFirestore = FakeFirebaseFirestore();
+    final cloudDataSource = FirestoreDataSource(firestore: fakeFirestore);
+    repository = LocalPredictionRepository(dataSource, cloudDataSource);
   });
 
   test('Repository: au debut la liste est vide', () async {
@@ -21,26 +25,29 @@ void main() {
     expect(all, isEmpty);
   });
 
-  test('Repository: creer deux predictions donne deux ids differents', () async {
-    final p1 = await repository.createAndSavePrediction(
-      glycemieAvant: 1.0,
-      glucides: 30.0,
-      insuline: 2.0,
-      glycemiePredite: 1.2,
-    );
+  test(
+    'Repository: creer deux predictions donne deux ids differents',
+    () async {
+      final p1 = await repository.createAndSavePrediction(
+        glycemieAvant: 1.0,
+        glucides: 30.0,
+        insuline: 2.0,
+        glycemiePredite: 1.2,
+      );
 
-    final p2 = await repository.createAndSavePrediction(
-      glycemieAvant: 1.1,
-      glucides: 40.0,
-      insuline: 3.0,
-      glycemiePredite: 1.3,
-    );
+      final p2 = await repository.createAndSavePrediction(
+        glycemieAvant: 1.1,
+        glucides: 40.0,
+        insuline: 3.0,
+        glycemiePredite: 1.3,
+      );
 
-    final all = await repository.getAllPredictions();
+      final all = await repository.getAllPredictions();
 
-    expect(all.length, 2);
-    expect(p1.id, isNot(p2.id));
-  });
+      expect(all.length, 2);
+      expect(p1.id, isNot(p2.id));
+    },
+  );
 
   test('Repository: supprimer une prediction la retire bien', () async {
     final created = await repository.createAndSavePrediction(
