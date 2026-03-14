@@ -56,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       });
 
-      if (success) {
+      if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Connexion réussie !'),
