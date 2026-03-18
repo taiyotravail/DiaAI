@@ -61,12 +61,12 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBJDpa9ENOWbiNK8id-FVTunaATb15VGPw',
+    apiKey: 'AIzaSyDZgv5Qm4GWuL6ILNrsKA9y6-0GhFhDJIA',
     appId: '1:1052841639210:ios:d9208f02d9eb153a2ef253',
     messagingSenderId: '1052841639210',
     projectId: 'diaai1',
     storageBucket: 'diaai1.firebasestorage.app',
-    iosBundleId: 'com.example.frontend',
+    iosBundleId: 'com.DiaAI.frontend',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

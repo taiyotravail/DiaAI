@@ -13,18 +13,21 @@ late LocalPredictionRepository predictionRepository;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialiser SharedPreferences
   final prefs = await SharedPreferences.getInstance();
-  // Initialiser la source de données locale et le repository
   final localDataSource = LocalDataSource(prefs);
-  final FirestoreDataSource cloudDataSource = FirestoreDataSource();
-  
 
-  // Initialiser Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  // Initialiser le Repository pour qu'il soit accessible dans toutes les pages
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } on FirebaseException catch (e) {
+    if (e.code != 'duplicate-app') {
+      rethrow;
+    }
+    Firebase.app();
+  }
+
+  final FirestoreDataSource cloudDataSource = FirestoreDataSource();
   predictionRepository = LocalPredictionRepository(localDataSource, cloudDataSource);
 
   runApp(const DiaAIApp());
