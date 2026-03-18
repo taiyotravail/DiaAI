@@ -22,8 +22,16 @@ class LocalPredictionRepository implements PredictionRepository {
 
   @override
   Future<List<Prediction>> getAllPredictions() async{
-    final localList =  await _localDataSource.getAllPredictions();
-    return localList.isNotEmpty ? localList : await  cloud.getAllPredictions();
+    try {
+      final cloudList = await cloud.getAllPredictions();
+      if (cloudList.isNotEmpty) {
+        return cloudList;
+      }
+    } catch (_) {
+      // ignore: offline ou erreur réseau
+      // todo : ajouter à une file d'attente de synchronisation
+    }
+    return await _localDataSource.getAllPredictions();
   }
 
   @override
